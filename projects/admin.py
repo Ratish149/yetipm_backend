@@ -31,9 +31,9 @@ class ProjectAdmin(ModelAdmin):
 
 @admin.register(Inquiry)
 class InquiryAdmin(ModelAdmin):
-    list_display = ['inquiry_type', 'property', 'name', 'email', 'submitted_at']
+    list_display = ['inquiry_type', 'property', 'first_name', 'last_name', 'email', 'submitted_at']
     list_filter = ['inquiry_type', 'submitted_at']
-    search_fields = ['name', 'email', 'message']
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'message']
     readonly_fields = ['submitted_at']
 
 

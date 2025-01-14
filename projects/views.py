@@ -50,7 +50,7 @@ class ProjectListCreateView(generics.ListCreateAPIView):
         'availability': ['exact'],
         'project_type': ['exact'],
         'city': ['exact'],
-        'price': ['gte', 'lte'],
+        'price': ['range'],
         'bedrooms': ['exact', 'gte', 'lte'],
         'bathrooms': ['exact', 'gte', 'lte'],
         'garage_spaces': ['exact', 'gte', 'lte'],

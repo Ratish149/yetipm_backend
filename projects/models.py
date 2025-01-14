@@ -88,15 +88,17 @@ class Inquiry(models.Model):
         ('general', 'General Inquiry'),
     ]
 
-    inquiry_type = models.CharField(max_length=20, choices=INQUIRY_TYPES)
+    inquiry_type = models.CharField(max_length=20, choices=INQUIRY_TYPES,null=True,blank=True)
     property = models.ForeignKey(Project, on_delete=models.CASCADE, blank=True, null=True)
-    name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     email = models.EmailField()
+    phone_number = models.CharField(max_length=15)
     message = models.TextField()
     submitted_at = models.DateTimeField(auto_now_add=True,)
 
     def __str__(self):
-        return f"{self.inquiry_type} - {self.name}"
+        return f"{self.inquiry_type} - {self.first_name} {self.last_name}"
     
 class Testimonial(models.Model):
     SOURCE_CHOICES = [
