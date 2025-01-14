@@ -43,10 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
+    'ckeditor',
+    'ckeditor_uploader',
     'tinymce',
     'projects',
     'corsheaders',
     'blog',
+    'django_summernote',
 ]
 
 
@@ -145,6 +148,8 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = []
 STATIC_ROOT = Path(BASE_DIR, "static/")
 
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CORS_ALLOW_ALL_ORIGINS = True
@@ -194,3 +199,6 @@ TINYMCE_DEFAULT_CONFIG = {
     'menubar': True,
     'statusbar': True,
 }
+
+
+SUMMERNOTE_THEME = 'bs4'

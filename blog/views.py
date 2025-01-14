@@ -1,20 +1,56 @@
 from django.shortcuts import render
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics,filters
-from .models import Blog
-from .serializers import BlogSerializer
-# Create your views here.
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Post,Tag,Category
+from .serializers import PostSerializer,PostSmallSerializer,TagSerializer,CategorySerializer,TagSmallSerializer,CategorySmallSerializer,PostSlugSerializer
+from bs4 import BeautifulSoup
 
-class BlogList(generics.ListCreateAPIView):
-    queryset = Blog.objects.all()
-    serializer_class = BlogSerializer
-    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
-    search_fields = ['title']
-    ordering_fields = ['created_at']
-    ordering = ['-created_at']
 
-class BlogDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Blog.objects.all()
-    serializer_class = BlogSerializer
-    lookup_field = 'slug'
+@api_view(['GET'])
+def post_list(request):
+    if request.method == 'GET':
+        posts = Post.objects.all()
+        tags = Tag.objects.all()
+        categories = Category.objects.all()
+        serializer = PostSmallSerializer(posts, many=True)
+        tag_serializer = TagSerializer(tags, many=True)
+        categories_serializer = CategorySerializer(categories, many=True)
+        return Response({
+            "posts":serializer.data,
+            "tags":tag_serializer.data,
+            "categories":categories_serializer.data,
+        })
+
+@api_view(['GET'])
+def post_list_slug(request):
+    if request.method == 'GET':
+        posts = Post.objects.all()
+        serializer = PostSlugSerializer(posts, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def post_single(request,slug):
+    if request.method == 'GET':
+        posts = Post.objects.get(slug=slug)
+        html_string = posts.blog_content
+        soup = BeautifulSoup(html_string, 'html.parser')
+        toc_div = soup.find('div', class_='mce-toc')
+        if toc_div is not None:
+            toc_div.extract()
+        updated_html_string = str(toc_div)
+        serializer = PostSerializer(posts)
+        return Response({
+            "data":serializer.data,
+            "toc":updated_html_string,
+        })
+    
+@api_view(['GET'])
+def recent_posts(request):
+    if request.method == 'GET':
+        posts = Post.objects.all()[:5]
+        posts_serializer = PostSerializer(posts,many=True)
+        return Response({
+          "recent_posts":posts_serializer.data,
+        })
 
