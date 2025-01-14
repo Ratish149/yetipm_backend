@@ -65,7 +65,7 @@ class ProjectFilter(django_filters.FilterSet):
         model = Project
         fields = ['min_price', 'max_price', 'beds', 'baths', 'property_type', 'city']
 
-class ProjectListView(generics.ListAPIView):
+class ProjectListView(generics.ListCreateAPIView):
     queryset = Project.objects.all().order_by('-created_at')
     serializer_class = ProjectSerializer
     filterset_class = ProjectFilter
