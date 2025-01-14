@@ -33,13 +33,20 @@ class CitySerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
+    features = FeaturesSerializer(many=True, read_only=True)
     uploaded_images = serializers.ListField(
         child=serializers.FileField(max_length=1000000, allow_empty_file=False, use_url=False),
         write_only=True,
         required=False,
         allow_empty=True
     )
+    feature_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        write_only=True,
+        required=False
+    )
     city = serializers.PrimaryKeyRelatedField(queryset=City.objects.all())
+    
     class Meta:
         model = Project
         fields = '__all__'
@@ -65,23 +72,29 @@ class ProjectSerializer(serializers.ModelSerializer):
         return []
 
     def create(self, validated_data):
-        # Extract and validate files
-        uploaded_images = self._get_valid_files(validated_data.pop('uploaded_images', []), 'uploaded_images')
+        # Extract and remove many-to-many fields from validated_data
+        uploaded_images = validated_data.pop('uploaded_images', [])
+        feature_ids = validated_data.pop('feature_ids', [])
 
+        # Create the project instance
         project = Project.objects.create(**validated_data)
         
         # Handle images
-        for image_file in uploaded_images:
+        for image_file in self._get_valid_files(uploaded_images, 'uploaded_images'):
             image = Image.objects.create(image=image_file)
             project.images.add(image)
-            
+        
+        # Handle features
+        if feature_ids:
+            features = Features.objects.filter(id__in=feature_ids)
+            project.features.set(features)
             
         return project
 
     def update(self, instance, validated_data):
-        # Extract and validate files
-        uploaded_images = self._get_valid_files(validated_data.pop('uploaded_images', []), 'uploaded_images')
-
+        # Extract and remove many-to-many fields from validated_data
+        uploaded_images = validated_data.pop('uploaded_images', [])
+        feature_ids = validated_data.pop('feature_ids', [])
         
         # Update basic fields
         for attr, value in validated_data.items():
@@ -89,10 +102,14 @@ class ProjectSerializer(serializers.ModelSerializer):
         instance.save()
         
         # Handle images
-        for image_file in uploaded_images:
+        for image_file in self._get_valid_files(uploaded_images, 'uploaded_images'):
             image = Image.objects.create(image=image_file)
             instance.images.add(image)
-            
+        
+        # Handle features
+        if feature_ids is not None:  # Only update if feature_ids is provided
+            features = Features.objects.filter(id__in=feature_ids)
+            instance.features.set(features)
             
         return instance
 

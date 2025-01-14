@@ -72,6 +72,7 @@ class ProjectListView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend, rest_filters.SearchFilter, rest_filters.OrderingFilter]
     search_fields = ['name', 'project_address', 'city__name']
     ordering_fields = ['price', 'created_at']
+    parser_classes = (MultiPartParser, FormParser)
     
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -85,20 +86,11 @@ class ProjectListView(generics.ListCreateAPIView):
         
         return queryset
     
-    def list(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         try:
-            queryset = self.filter_queryset(self.get_queryset())
-            page = self.paginate_queryset(queryset)
-            
-            if page is not None:
-                serializer = self.get_serializer(page, many=True)
-                return self.get_paginated_response(serializer.data)
-
-            serializer = self.get_serializer(queryset, many=True)
-            return Response(serializer.data)
-            
+            return super().create(request, *args, **kwargs)
         except Exception as e:
-            print(f"Error in ProjectListView: {str(e)}")
+            print(f"Error in ProjectListView create: {str(e)}")
             import traceback
             print(traceback.format_exc())
             return Response(
