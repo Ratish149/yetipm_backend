@@ -50,31 +50,41 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.question
+    
+class Features(models.Model):
+    image = models.FileField(blank=True, null=True)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
     
 class Project(SlugMixin, models.Model):
     PROJECT_TYPE_CHOICES = [
         ('Single Family', 'Single Family'),
-        ('Multi Family', 'Multi Family'),
         ('Condominium', 'Condominium'),
         ('Townhouse', 'Townhouse'),
-        ('Move in Ready', 'Move in Ready'),
+        ('Duplex', 'Duplex'),
         ('Other', 'Other'),
     ]
 
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True, blank=True)
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
     project_type = models.CharField(max_length=100, choices=PROJECT_TYPE_CHOICES,default='Single Family')
     project_address = models.CharField(max_length=200)
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price_breakdown = models.TextField(blank=True)
     project_description = models.TextField(blank=True)
     area_square_footage = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     garage_spaces = models.IntegerField(blank=True, null=True)
     images = models.ManyToManyField(Image, blank=True)
-    bedrooms = models.IntegerField(blank=True, null=True)
-    bathrooms = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE, blank=True, null=True)
-    availability = models.BooleanField(default=False)
+    features = models.ManyToManyField(Features, blank=True)
+    bedrooms = models.IntegerField()
+    bathrooms = models.IntegerField()
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    availability = models.BooleanField(default=True)
+    avialable_date = models.DateField(blank=True, null=True)
+    postal_code = models.CharField(max_length=10, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
@@ -84,8 +94,8 @@ class Project(SlugMixin, models.Model):
     
 class Inquiry(models.Model):
     INQUIRY_TYPES = [
-        ('specific_property', 'Specific Property'),
-        ('general', 'General Inquiry'),
+        ('Specific Property', 'Specific Property'),
+        ('General Inquiry', 'General Inquiry'),
     ]
 
     inquiry_type = models.CharField(max_length=20, choices=INQUIRY_TYPES,null=True,blank=True)

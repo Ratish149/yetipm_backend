@@ -88,15 +88,15 @@ WSGI_APPLICATION = 'yetipm.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-} """
+}
 
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'yeti_pm',
@@ -105,7 +105,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '',
     }
-}
+} """
  
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
@@ -153,7 +153,7 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = False
 
 
 # Default primary key field type
@@ -168,7 +168,15 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 12,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler'
 }
 
 TINYMCE_DEFAULT_CONFIG = {
@@ -202,3 +210,29 @@ TINYMCE_DEFAULT_CONFIG = {
 
 
 SUMMERNOTE_THEME = 'bs4'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
