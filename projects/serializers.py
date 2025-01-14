@@ -35,7 +35,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     features = FeaturesSerializer(many=True, read_only=True)
     city_name = serializers.CharField(source='city.name', read_only=True)
-    
+    city = CitySerializer(read_only=True)
     uploaded_images = serializers.ListField(
         child=serializers.FileField(max_length=1000000, allow_empty_file=False, use_url=False),
         write_only=True,
