@@ -6,6 +6,10 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters import rest_framework as django_filters
 from rest_framework.response import Response
 from rest_framework import status
+from django.conf import settings  # Import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
 
 from .models import (
     State, City, Image, Features,
@@ -119,6 +123,24 @@ class InquiryListCreateView(generics.ListCreateAPIView):
     filter_backends = [rest_filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['first_name', 'last_name', 'email']
     filterset_fields = ['inquiry_type', 'property']
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        
+        # Send confirmation email
+        inquiry_data = response.data
+        self.send_confirmation_email(inquiry_data['email'], inquiry_data['first_name'])
+        
+        return response
+
+    def send_confirmation_email(self, email, first_name):
+        subject = "Inquiry Confirmation"
+        message = render_to_string('email/email_template.html', {'first_name': first_name})
+        from_email = settings.DEFAULT_FROM_EMAIL  # Use the default email from settings
+        recipient_list = [email]
+
+        # Send the email
+        send_mail(subject, message, from_email, recipient_list, html_message=message)
 
 class InquiryDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Inquiry.objects.all()
