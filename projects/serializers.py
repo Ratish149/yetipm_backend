@@ -38,7 +38,7 @@ class ProjectListDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ['id', 'name', 'slug', 'city', 'features', 'images', 'price', 'availability']  # Add other fields as necessary
+        fields = '__all__'  # Add other fields as necessary
 
 class ProjectSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
