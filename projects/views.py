@@ -25,7 +25,7 @@ from .serializers import (
 # Create your views here.
 
 class CustomPagination(PageNumberPagination):
-    page_size = 30
+    page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 100
 
@@ -35,6 +35,7 @@ class StateListCreateView(generics.ListCreateAPIView):
     filter_backends = [rest_filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['name', 'abbreviation']
     filterset_fields = ['name', 'abbreviation']
+    pagination_class = CustomPagination
 
 class StateDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = State.objects.all()
@@ -47,6 +48,7 @@ class CityListCreateView(generics.ListCreateAPIView):
     filter_backends = [rest_filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['name', 'state__name']
     filterset_fields = ['state']
+    pagination_class = CustomPagination
 
 class CityDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = City.objects.all()
@@ -57,6 +59,7 @@ class FeaturesListCreateView(generics.ListCreateAPIView):
     queryset = Features.objects.all()
     serializer_class = FeaturesSerializer
     parser_classes = (MultiPartParser, FormParser)
+    pagination_class = CustomPagination
 
 class FeaturesDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Features.objects.all()
