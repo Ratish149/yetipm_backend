@@ -19,7 +19,7 @@ from rest_framework.pagination import PageNumberPagination
 from .serializers import (
     StateSerializer, CitySerializer, ImageSerializer,
     FeaturesSerializer, FAQSerializer, ProjectSerializer,
-    TestimonialSerializer, InquirySerializer
+    TestimonialSerializer, InquirySerializer, ProjectDetailSerializer
 )
 
 # Create your views here.
@@ -80,7 +80,7 @@ class ProjectFilter(django_filters.FilterSet):
 
 class ProjectListView(generics.ListCreateAPIView):
     queryset = Project.objects.all().order_by('-created_at')
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectDetailSerializer
     filterset_class = ProjectFilter
     filter_backends = [DjangoFilterBackend, rest_filters.SearchFilter, rest_filters.OrderingFilter]
     search_fields = ['name', 'project_address', 'city__name']
@@ -99,18 +99,14 @@ class ProjectListView(generics.ListCreateAPIView):
             queryset = queryset.filter(availability=is_available)
         
         return queryset
-    
+
     def create(self, request, *args, **kwargs):
-        try:
-            return super().create(request, *args, **kwargs)
-        except Exception as e:
-            print(f"Error in ProjectListView create: {str(e)}")
-            import traceback
-            print(traceback.format_exc())
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        # Use the ProjectSerializer for creating a new project
+        serializer = ProjectSerializer(data=request.data)
+        if serializer.is_valid():
+            project = serializer.save()
+            return Response(ProjectDetailSerializer(project).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()

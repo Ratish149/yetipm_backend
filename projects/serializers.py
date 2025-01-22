@@ -31,6 +31,15 @@ class CitySerializer(serializers.ModelSerializer):
         model = City
         fields = '__all__'
 
+class ProjectListDetailSerializer(serializers.ModelSerializer):
+    city = serializers.PrimaryKeyRelatedField(read_only=True)
+    features = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Project
+        fields = ['id', 'name', 'slug', 'city', 'features', 'images', 'price', 'availability']  # Add other fields as necessary
+
 class ProjectSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     features = FeaturesSerializer(many=True, read_only=True)
@@ -125,3 +134,18 @@ class TestimonialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Testimonial
         fields = '__all__'
+
+class ProjectDetailSerializer(serializers.ModelSerializer):
+    city = serializers.PrimaryKeyRelatedField(read_only=True)
+    images = ImageSerializer(many=True, read_only=True)
+    features = FeaturesSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Project
+        fields = [
+            'id', 'name', 'slug', 'project_type', 'project_address', 
+            'price','area_square_footage', 'garage_spaces', 'images', 
+            'features', 'bedrooms', 'bathrooms', 'city', 
+            'availability', 'avialable_date', 'postal_code', 
+            'created_at', 'updated_at'
+        ]
