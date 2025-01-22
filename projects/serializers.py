@@ -26,6 +26,7 @@ class StateSerializer(serializers.ModelSerializer):
 
 class CitySerializer(serializers.ModelSerializer):
     state_name = serializers.CharField(source='state.name', read_only=True)
+    state=StateSerializer(read_only=True)
     
     class Meta:
         model = City
