@@ -143,7 +143,7 @@ class TestimonialSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProjectAllSerializer(serializers.ModelSerializer):
-    city = CitySerializer(many=True,read_only=True)
+    city = CitySerializer(read_only=True)
     images = ImageSerializer(many=True, read_only=True)
     features = FeaturesSerializer(many=True, read_only=True)
 
