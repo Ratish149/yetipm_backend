@@ -58,14 +58,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Project
-        fields = [
-            'id', 'name', 'slug', 'project_type', 'project_address', 
-            'price', 'price_breakdown', 'project_description', 
-            'area_square_footage', 'garage_spaces', 'images', 
-            'features', 'bedrooms', 'bathrooms', 'city', 'city_detail',
-            'availability', 'avialable_date', 'postal_code', 'uploaded_images',
-            'created_at', 'updated_at'
-        ]
+        fields = '__all__'
         extra_kwargs = {
             'slug': {'read_only': True},
         }
