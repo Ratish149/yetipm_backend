@@ -31,4 +31,7 @@ urlpatterns = [
     path('testimonials/<int:pk>/', views.TestimonialDetailView.as_view(), name='testimonial-detail'),
     
     path('projects/city/<slug:city_slug>/', views.ProjectCityListView.as_view(), name='project-city-list'),
+
+    path('upload-states/', views.StateUploadAPIView.as_view(), name='upload-states'),
+
 ]
