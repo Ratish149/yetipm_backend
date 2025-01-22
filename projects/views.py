@@ -19,7 +19,7 @@ from rest_framework.pagination import PageNumberPagination
 from .serializers import (
     StateSerializer, CitySerializer, ImageSerializer,
     FeaturesSerializer, FAQSerializer, ProjectSerializer,
-    TestimonialSerializer, InquirySerializer, ProjectDetailSerializer
+    TestimonialSerializer, InquirySerializer
 )
 
 # Create your views here.
@@ -98,8 +98,7 @@ class ProjectListView(generics.ListCreateAPIView):
             is_available = availability.lower() in ['true', '1', 'yes']
             queryset = queryset.filter(availability=is_available)
         
-        # Serialize the queryset using ProjectDetailSerializer
-        return ProjectDetailSerializer(queryset, many=True).data
+        return queryset
     
     def create(self, request, *args, **kwargs):
         try:
