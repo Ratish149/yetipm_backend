@@ -64,7 +64,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             'price', 'price_breakdown', 'project_description', 
             'area_square_footage', 'garage_spaces', 'images', 
             'features', 'bedrooms', 'bathrooms', 'city', 'city_detail',
-            'availability', 'avialable_date', 'postal_code', 
+            'availability', 'avialable_date', 'postal_code', 'uploaded_images',
             'created_at', 'updated_at'
         ]
         extra_kwargs = {
