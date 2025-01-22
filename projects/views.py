@@ -19,7 +19,7 @@ from rest_framework.pagination import PageNumberPagination
 from .serializers import (
     StateSerializer, CitySerializer, ImageSerializer,
     FeaturesSerializer, FAQSerializer, ProjectSerializer,
-    TestimonialSerializer, InquirySerializer
+    TestimonialSerializer, InquirySerializer, ProjectAllSerializer
 )
 
 # Create your views here.
@@ -80,7 +80,13 @@ class ProjectFilter(django_filters.FilterSet):
 
 class ProjectListView(generics.ListCreateAPIView):
     queryset = Project.objects.all().order_by('-created_at')
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectAllSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return ProjectSerializer
+        return super().get_serializer_class()
+
     filterset_class = ProjectFilter
     filter_backends = [DjangoFilterBackend, rest_filters.SearchFilter, rest_filters.OrderingFilter]
     search_fields = ['name', 'project_address', 'city__name']

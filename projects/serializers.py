@@ -26,7 +26,6 @@ class StateSerializer(serializers.ModelSerializer):
 
 class CitySerializer(serializers.ModelSerializer):
     state_name = serializers.CharField(source='state.name', read_only=True)
-    state=StateSerializer(read_only=True)
     
     class Meta:
         model = City
@@ -56,7 +55,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         required=False
     )
     city = serializers.PrimaryKeyRelatedField(queryset=City.objects.all())
-    city_detail = CitySerializer(source='city', read_only=True)
     
     class Meta:
         model = Project
@@ -66,7 +64,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             'area_square_footage', 'garage_spaces', 'images', 
             'features', 'bedrooms', 'bathrooms', 'city', 'city_detail',
             'availability', 'avialable_date', 'postal_code', 'uploaded_images',
-            'feature_ids', 'created_at', 'updated_at'
+            'created_at', 'updated_at'
         ]
         extra_kwargs = {
             'slug': {'read_only': True},
@@ -144,8 +142,8 @@ class TestimonialSerializer(serializers.ModelSerializer):
         model = Testimonial
         fields = '__all__'
 
-class ProjectDetailSerializer(serializers.ModelSerializer):
-    city = serializers.PrimaryKeyRelatedField(read_only=True)
+class ProjectAllSerializer(serializers.ModelSerializer):
+    city = CitySerializer(many=True,read_only=True)
     images = ImageSerializer(many=True, read_only=True)
     features = FeaturesSerializer(many=True, read_only=True)
 
