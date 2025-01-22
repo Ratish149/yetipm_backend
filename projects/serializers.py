@@ -55,10 +55,18 @@ class ProjectSerializer(serializers.ModelSerializer):
         required=False
     )
     city = serializers.PrimaryKeyRelatedField(queryset=City.objects.all())
+    city_detail = CitySerializer(source='city', read_only=True)
     
     class Meta:
         model = Project
-        fields = '__all__'
+        fields = [
+            'id', 'name', 'slug', 'project_type', 'project_address', 
+            'price', 'price_breakdown', 'project_description', 
+            'area_square_footage', 'garage_spaces', 'images', 
+            'features', 'bedrooms', 'bathrooms', 'city', 'city_detail',
+            'availability', 'avialable_date', 'postal_code', 
+            'created_at', 'updated_at'
+        ]
         extra_kwargs = {
             'slug': {'read_only': True},
         }
