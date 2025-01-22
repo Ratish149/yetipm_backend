@@ -149,3 +149,7 @@ class ProjectAllSerializer(serializers.ModelSerializer):
             'availability', 'avialable_date', 'postal_code', 
             'created_at', 'updated_at'
         ]
+
+
+class StateSerializer(serializers.ModelSerializer):
+    file=serializers.FileField()

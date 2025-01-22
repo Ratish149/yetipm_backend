@@ -200,8 +200,10 @@ from rest_framework import status
 import csv
 from io import TextIOWrapper
 from .models import State
+from .serializers import StateSerializer
 
 class StateUploadAPIView(APIView):
+    serializer_class = StateSerializer
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
