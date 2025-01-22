@@ -15,6 +15,7 @@ from .models import (
     State, City, Image, Features,
     FAQ, Project, Testimonial, Inquiry
 )
+from rest_framework.pagination import PageNumberPagination
 from .serializers import (
     StateSerializer, CitySerializer, ImageSerializer,
     FeaturesSerializer, FAQSerializer, ProjectSerializer,
@@ -22,6 +23,11 @@ from .serializers import (
 )
 
 # Create your views here.
+
+class CustomPagination(PageNumberPagination):
+    page_size = 30
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 class StateListCreateView(generics.ListCreateAPIView):
     queryset = State.objects.all()
@@ -77,6 +83,7 @@ class ProjectListView(generics.ListCreateAPIView):
     search_fields = ['name', 'project_address', 'city__name']
     ordering_fields = ['price', 'created_at']
     parser_classes = (MultiPartParser, FormParser)
+    pagination_class = CustomPagination
     
     def get_queryset(self):
         queryset = super().get_queryset()
