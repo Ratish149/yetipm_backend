@@ -65,7 +65,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             'area_square_footage', 'garage_spaces', 'images', 
             'features', 'bedrooms', 'bathrooms', 'city', 'city_detail',
             'availability', 'avialable_date', 'postal_code', 'uploaded_images',
-            'created_at', 'updated_at'
+            'feature_ids', 'created_at', 'updated_at'
         ]
         extra_kwargs = {
             'slug': {'read_only': True},
