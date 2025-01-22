@@ -19,7 +19,7 @@ from rest_framework.pagination import PageNumberPagination
 from .serializers import (
     StateSerializer, CitySerializer, ImageSerializer,
     FeaturesSerializer, FAQSerializer, ProjectSerializer,
-    TestimonialSerializer, InquirySerializer, ProjectAllSerializer
+    TestimonialSerializer, InquirySerializer, ProjectAllSerializer,ProjectListDetailSerializer
 )
 
 # Create your views here.
@@ -120,7 +120,7 @@ class ProjectListView(generics.ListCreateAPIView):
 
 class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectListDetailSerializer
     parser_classes = (MultiPartParser, FormParser)
     lookup_field = 'slug'
 

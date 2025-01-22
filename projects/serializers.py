@@ -32,9 +32,9 @@ class CitySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProjectListDetailSerializer(serializers.ModelSerializer):
-    city = serializers.PrimaryKeyRelatedField(read_only=True)
-    features = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    city = CitySerializer(read_only=True)
+    features = FeaturesSerializer(many=True, read_only=True)
+    images = ImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Project
