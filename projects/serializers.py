@@ -151,10 +151,5 @@ class ProjectAllSerializer(serializers.ModelSerializer):
         ]
 
 
-class StateSerializer(serializers.ModelSerializer):
-    file=serializers.FileField()
 
-    class Meta:
-        model = State
-        fields = ['file']
 
