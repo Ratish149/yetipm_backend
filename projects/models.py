@@ -80,7 +80,7 @@ class Project(SlugMixin, models.Model):
     images = models.ManyToManyField(Image, blank=True)
     features = models.ManyToManyField(Features, blank=True)
     bedrooms = models.IntegerField()
-    bathrooms = models.IntegerField()
+    bathrooms = models.FloatField()
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     availability = models.BooleanField(default=True)
     avialable_date = models.DateField(blank=True, null=True)
