@@ -6,5 +6,4 @@ urlpatterns = [
     path('latest-blogs/', recent_posts, name='recent_posts'),
     path('blogs-slug/', post_list_slug, name='post_list_slug'),
     path('blogs-single/<str:slug>/', post_single, name='post_single'),
-    path('blogs/similar/<slug:slug>/', similar_listings, name='similar_listings'),
 ]

@@ -30,7 +30,7 @@ def post_list_slug(request):
         return Response(serializer.data)
 
 @api_view(['GET'])
-def post_single(request,slug):
+def post_single(request, slug):
     if request.method == 'GET':
         posts = Post.objects.get(slug=slug)
         html_string = posts.blog_content
@@ -40,9 +40,19 @@ def post_single(request,slug):
             toc_div.extract()
         updated_html_string = str(toc_div)
         serializer = PostSerializer(posts)
+
+        # New code to get similar listings
+        similar_posts = Post.objects.filter(
+            tags__in=posts.tags.all()
+        ).filter(
+            categories__in=posts.categories.all()
+        ).exclude(slug=slug)[:5]
+        similar_serializer = PostSmallSerializer(similar_posts, many=True)
+
         return Response({
-            "data":serializer.data,
-            "toc":updated_html_string,
+            "data": serializer.data,
+            "toc": updated_html_string,
+            "similar_listings": similar_serializer.data,  # Include similar listings
         })
     
 @api_view(['GET'])
@@ -54,20 +64,4 @@ def recent_posts(request):
           "recent_posts":posts_serializer.data,
         })
 
-@api_view(['GET'])
-def similar_listings(request, slug):
-    if request.method == 'GET':
-        try:
-            post = Post.objects.get(slug=slug)
-            similar_posts = Post.objects.filter(
-                tags__in=post.tags.all()
-            ).filter(
-                categories__in=post.categories.all()
-            ).exclude(slug=slug)[:5]
-            serializer = PostSmallSerializer(similar_posts, many=True)
-            return Response({
-                "similar_listings": serializer.data,
-            })
-        except Post.DoesNotExist:
-            return Response({"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND)
 
