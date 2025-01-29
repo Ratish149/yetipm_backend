@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'projects',
     'corsheaders',
     'blog',
+    'team',
     'django_summernote',
 ]
 

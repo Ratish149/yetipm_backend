@@ -58,6 +58,9 @@ class Post(SlugMixin,models.Model):
     blog_content = tinymce_models.HTMLField(blank=True)
     tags = models.ManyToManyField(Tag,blank=True)
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING)
+    meta_title = models.CharField(max_length=200)
+    meta_description = models.CharField(max_length=500,blank=True)
+    meta_keywords = models.CharField(max_length=200,blank=True)
 
 
     class Meta:

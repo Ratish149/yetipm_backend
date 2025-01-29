@@ -54,3 +54,16 @@ def recent_posts(request):
           "recent_posts":posts_serializer.data,
         })
 
+@api_view(['GET'])
+def similar_listings(request, slug):
+    if request.method == 'GET':
+        try:
+            post = Post.objects.get(slug=slug)
+            similar_posts = Post.objects.filter(tags__in=post.tags.all()).exclude(slug=slug)[:5]  # Get similar posts based on tags
+            serializer = PostSmallSerializer(similar_posts, many=True)
+            return Response({
+                "similar_listings": serializer.data,
+            })
+        except Post.DoesNotExist:
+            return Response({"error": "Post not found."}, status=status.HTTP_404_NOT_FOUND)
+
