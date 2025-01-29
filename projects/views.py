@@ -46,8 +46,8 @@ class CityListCreateView(generics.ListCreateAPIView):
     queryset = City.objects.all()
     serializer_class = CitySerializer
     filter_backends = [rest_filters.SearchFilter, DjangoFilterBackend]
-    search_fields = ['name', 'state__name']
-    filterset_fields = ['state']
+    search_fields = ['name']
+    filterset_fields = ['state', 'name']
     pagination_class = CustomPagination
 
 class CityDetailView(generics.RetrieveUpdateDestroyAPIView):

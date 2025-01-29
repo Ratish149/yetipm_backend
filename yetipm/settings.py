@@ -89,15 +89,15 @@ WSGI_APPLICATION = 'yetipm.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-} """
+}
 
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'yeti_pm',
@@ -107,7 +107,7 @@ DATABASES = {
         'PORT': '',
     }
 }
- 
+  """
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
 
