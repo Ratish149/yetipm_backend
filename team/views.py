@@ -6,7 +6,7 @@ from .serializers import OurTeamSerializer
 # Create your views here.
 
 class OurTeamListCreateView(generics.ListCreateAPIView):
-    queryset = OurTeam.objects.all()
+    queryset = OurTeam.objects.all().order_by('created_at')
     serializer_class = OurTeamSerializer
 
 class OurTeamRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
