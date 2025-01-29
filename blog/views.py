@@ -59,7 +59,11 @@ def similar_listings(request, slug):
     if request.method == 'GET':
         try:
             post = Post.objects.get(slug=slug)
-            similar_posts = Post.objects.filter(tags__in=post.tags.all()).exclude(slug=slug)[:5]  # Get similar posts based on tags
+            similar_posts = Post.objects.filter(
+                tags__in=post.tags.all()
+            ).filter(
+                categories__in=post.categories.all()
+            ).exclude(slug=slug)[:5]
             serializer = PostSmallSerializer(similar_posts, many=True)
             return Response({
                 "similar_listings": serializer.data,
