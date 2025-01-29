@@ -44,7 +44,7 @@ def post_single(request, slug):
         # New code to get similar listings
         similar_posts = Post.objects.filter(
             tags__in=posts.tags.all()
-        ).exclude(slug=slug)[:5]
+        ).exclude(slug=slug).distinct()[:5]
         similar_serializer = PostSmallSerializer(similar_posts, many=True)
 
         return Response({
