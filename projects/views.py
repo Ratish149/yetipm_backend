@@ -168,7 +168,11 @@ class InquiryListCreateView(generics.ListCreateAPIView):
         
         # Determine the recipient email based on inquiry type
         recipient_email = inquiry_data.get('email')
-        self.send_confirmation_email(recipient_email, inquiry_data, None)  # Adjust as needed
+        
+        # Check if property details are available
+        property_details = inquiry_data.get('property') if 'property' in inquiry_data else None
+        
+        self.send_confirmation_email(recipient_email, inquiry_data, property_details)  # Pass property details if available
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
