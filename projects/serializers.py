@@ -146,6 +146,6 @@ class InquirySerializer(serializers.ModelSerializer):
     property = ProjectAllSerializer(read_only=True)    
     class Meta:
         model = Inquiry
-        fields = ['id', 'inquiry_type', 'first_name', 'last_name', 'email', 'phone_number', 'message', 'submitted_at',]
+        fields = ['id', 'inquiry_type', 'first_name', 'last_name', 'email', 'phone_number', 'message', 'submitted_at','property']
         read_only_fields = ['submitted_at']
 
