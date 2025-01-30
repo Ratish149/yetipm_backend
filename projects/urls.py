@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     # State URLs
     path('states/', views.StateListCreateView.as_view(), name='state-list'),
@@ -32,5 +33,6 @@ urlpatterns = [
     
     path('projects/city/<slug:city_slug>/', views.ProjectCityListView.as_view(), name='project-city-list'),
 
-
+    path('faqs/', views.FAQListCreateView.as_view(), name='faq-list-create'),
+    path('faqs/<int:id>/', views.FAQDetailView.as_view(), name='faq-detail'),
 ]

@@ -145,7 +145,14 @@ class InquiryListCreateView(generics.ListCreateAPIView):
         
         # Send confirmation email
         inquiry_data = response.data
-        self.send_confirmation_email(inquiry_data['email'], inquiry_data['first_name'])
+        
+        # Determine the recipient email based on inquiry type
+        if inquiry_data.get('inquiry_type') == 'specific_property':
+            recipient_email = inquiry_data.get('property_email')  # Assuming property_email is part of the inquiry data
+        else:
+            recipient_email = settings.EMAIL_HOST_USER  # Use admin email from settings
+        
+        self.send_confirmation_email(recipient_email, inquiry_data['first_name'])
         
         return response
 
@@ -192,3 +199,17 @@ class ProjectCityListView(generics.ListAPIView):
             queryset = queryset.filter(availability=is_available)
         
         return queryset
+
+class FAQListCreateView(generics.ListCreateAPIView):
+    queryset = FAQ.objects.all()
+    serializer_class = FAQSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    pagination_class = CustomPagination
+    filter_backends = [rest_filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ['question']  # Assuming you want to search by the question field
+    filterset_fields = ['category']  # Assuming there's a category field for filtering
+
+class FAQDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FAQ.objects.all()
+    serializer_class = FAQSerializer
+    lookup_field = 'id'  # Assuming you want to look up by a slug field
