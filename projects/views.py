@@ -184,7 +184,7 @@ class InquiryListCreateView(generics.ListCreateAPIView):
             'email': inquiry_data['email'],
             'phone_number': inquiry_data['phone_number'],
             'message': inquiry_data['message'],
-            'slug': property_details.slug  # Pass property details if available
+            'property': property_details  # Pass property details if available
         })
         from_email = settings.DEFAULT_FROM_EMAIL  # Use the default email from settings
         recipient_list = [email]
