@@ -19,7 +19,7 @@ from rest_framework.pagination import PageNumberPagination
 from .serializers import (
     StateSerializer, CitySerializer, ImageSerializer,
     FeaturesSerializer, FAQSerializer, ProjectSerializer,
-    TestimonialSerializer, InquirySerializer, ProjectAllSerializer,ProjectListDetailSerializer
+    TestimonialSerializer, InquirySerializer, ProjectAllSerializer,ProjectListDetailSerializer, InquiryALLSerializer
 )
 
 # Create your views here.
@@ -138,7 +138,13 @@ class ImageDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 class InquiryListCreateView(generics.ListCreateAPIView):
     queryset = Inquiry.objects.all().order_by('-submitted_at')
-    serializer_class = InquirySerializer
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return InquirySerializer
+        return InquiryALLSerializer  # Use InquiryALLSerializer for GET requests
+
+    serializer_class = InquirySerializer  # Default serializer for POST requests
     filter_backends = [rest_filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['first_name', 'last_name', 'email']
     filterset_fields = ['inquiry_type', 'property']
@@ -182,7 +188,7 @@ class InquiryListCreateView(generics.ListCreateAPIView):
 
 class InquiryDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Inquiry.objects.all()
-    serializer_class = InquirySerializer
+    serializer_class = InquiryALLSerializer
 
 class TestimonialListCreateView(generics.ListCreateAPIView):
     queryset = Testimonial.objects.all()
