@@ -75,10 +75,11 @@ class ProjectFilter(django_filters.FilterSet):
     city = django_filters.CharFilter(field_name="city__name", lookup_expr='iexact')
     min_area_square_footage = django_filters.NumberFilter(field_name="area_square_footage", lookup_expr='gte')
     max_area_square_footage = django_filters.NumberFilter(field_name="area_square_footage", lookup_expr='lte')
+    features = django_filters.ModelMultipleChoiceFilter(queryset=Features.objects.all(), field_name='features')
     
     class Meta:
         model = Project
-        fields = ['min_price', 'max_price', 'beds', 'baths', 'property_type', 'city', 'min_area_square_footage', 'max_area_square_footage']
+        fields = ['min_price', 'max_price', 'beds', 'baths', 'property_type', 'city', 'min_area_square_footage', 'max_area_square_footage', 'features']
 
 class ProjectListView(generics.ListCreateAPIView):
     queryset = Project.objects.all().order_by('-created_at')
