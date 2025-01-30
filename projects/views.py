@@ -172,11 +172,14 @@ class InquiryListCreateView(generics.ListCreateAPIView):
         # Check if property details are available
         property_details = inquiry_data.get('property') if 'property' in inquiry_data else None
         
-        self.send_confirmation_email(recipient_email, inquiry_data, property_details)  # Pass property details if available
+        # Retrieve the project slug if available
+        project_slug = inquiry_data.get('property').slug if inquiry_data.get('property') else None
+        
+        self.send_confirmation_email(recipient_email, inquiry_data, property_details, project_slug)  # Pass project slug
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def send_confirmation_email(self, email, inquiry_data, property_details):
+    def send_confirmation_email(self, email, inquiry_data, property_details, project_slug):
         subject = "Inquiry Confirmation"
         message = render_to_string('email/email_template.html', {
             'first_name': inquiry_data['first_name'],
@@ -184,7 +187,8 @@ class InquiryListCreateView(generics.ListCreateAPIView):
             'email': inquiry_data['email'],
             'phone_number': inquiry_data['phone_number'],
             'message': inquiry_data['message'],
-            'property': property_details  # Pass property details if available
+            'property': property_details,  # Pass property details if available
+            'project_slug': project_slug  # Include project slug in the email
         })
         from_email = settings.DEFAULT_FROM_EMAIL  # Use the default email from settings
         recipient_list = [email]
