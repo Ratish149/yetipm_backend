@@ -123,8 +123,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         return instance
 
 class InquirySerializer(serializers.ModelSerializer):
-    property_name = serializers.CharField(source='property.name', read_only=True)
-    
+    property = ProjectSerializer(read_only=True)    
     class Meta:
         model = Inquiry
         fields = '__all__'
