@@ -150,25 +150,27 @@ class InquiryListCreateView(generics.ListCreateAPIView):
     filterset_fields = ['inquiry_type', 'property']
 
     def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        
+        # Use the serializer to validate and create the Inquiry instance
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # Debugging: Print the validated data
+        print("Validated data:", serializer.validated_data)
+
+        # Save the Inquiry instance, which will include the property
+        inquiry_instance = serializer.save()
+
+        # Debugging: Print the saved inquiry instance
+        print("Saved Inquiry instance:", inquiry_instance)
+
         # Send confirmation email
-        inquiry_data = response.data
+        inquiry_data = serializer.data
         
         # Determine the recipient email based on inquiry type
-        if inquiry_data.get('inquiry_type') == 'Specific Property':
-            property_instance = inquiry_data.get('property')
-            property_details = None
-            
-            if property_instance:
-                property_details = Project.objects.get(id=property_instance)  # Fetch property details
-        else:
-            property_details = None
         recipient_email = inquiry_data.get('email')
+        self.send_confirmation_email(recipient_email, inquiry_data, None)  # Adjust as needed
         
-        self.send_confirmation_email(recipient_email, inquiry_data, property_details)
-        
-        return response
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def send_confirmation_email(self, email, inquiry_data, property_details):
         subject = "Inquiry Confirmation"
