@@ -123,10 +123,10 @@ class ProjectSerializer(serializers.ModelSerializer):
         return instance
 
 class InquirySerializer(serializers.ModelSerializer):
-    property = ProjectSerializer(read_only=True)    
+    property = ProjectListDetailSerializer(read_only=True)    
     class Meta:
         model = Inquiry
-        fields = '__all__'
+        fields = ['id', 'inquiry_type', 'first_name', 'last_name', 'email', 'phone_number', 'message', 'submitted_at',]
         read_only_fields = ['submitted_at']
 
 class TestimonialSerializer(serializers.ModelSerializer):
