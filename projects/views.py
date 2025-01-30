@@ -137,7 +137,7 @@ class ImageDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ImageSerializer
 
 class InquiryListCreateView(generics.ListCreateAPIView):
-    queryset = Inquiry.objects.all()
+    queryset = Inquiry.objects.all().order_by('-created_at')
     serializer_class = InquirySerializer
     filter_backends = [rest_filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['first_name', 'last_name', 'email']
