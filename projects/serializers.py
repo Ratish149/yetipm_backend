@@ -144,7 +144,7 @@ class ProjectAllSerializer(serializers.ModelSerializer):
         ]
 class InquirySerializer(serializers.ModelSerializer):
     # property = ProjectAllSerializer(read_only=True)
-    property = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all(), read_only=True)
+    property = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Inquiry
         fields = ['id', 'inquiry_type', 'first_name', 'last_name', 'email', 'phone_number', 'message', 'submitted_at','property']
