@@ -56,10 +56,11 @@ def post_single(request, slug):
 @api_view(['GET'])
 def recent_posts(request):
     if request.method == 'GET':
-        posts = Post.objects.all()[:5]
-        posts_serializer = PostSerializer(posts,many=True)
+        # Order by created_at in descending order to get the latest posts
+        posts = Post.objects.order_by('-created_at')[:5]
+        posts_serializer = PostSerializer(posts, many=True)
         return Response({
-          "recent_posts":posts_serializer.data,
+          "recent_posts": posts_serializer.data,
         })
 
 
