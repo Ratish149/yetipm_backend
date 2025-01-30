@@ -147,18 +147,30 @@ class InquiryListCreateView(generics.ListCreateAPIView):
         inquiry_data = response.data
         
         # Determine the recipient email based on inquiry type
-        if inquiry_data.get('inquiry_type') == 'specific_property':
-            recipient_email = inquiry_data.get('property_email')  # Assuming property_email is part of the inquiry data
+        if inquiry_data.get('inquiry_type') == 'Specific Property':
+            property_instance = inquiry_data.get('property')
+            property_details = None
+            
+            if property_instance:
+                property_details = Project.objects.get(id=property_instance)  # Fetch property details
         else:
-            recipient_email = settings.EMAIL_HOST_USER  # Use admin email from settings
+            property_details = None
+        recipient_email = inquiry_data.get('email')
         
-        self.send_confirmation_email(recipient_email, inquiry_data['first_name'])
+        self.send_confirmation_email(recipient_email, inquiry_data, property_details)
         
         return response
 
-    def send_confirmation_email(self, email, first_name):
+    def send_confirmation_email(self, email, inquiry_data, property_details):
         subject = "Inquiry Confirmation"
-        message = render_to_string('email/email_template.html', {'first_name': first_name})
+        message = render_to_string('email/email_template.html', {
+            'first_name': inquiry_data['first_name'],
+            'last_name': inquiry_data['last_name'],
+            'email': inquiry_data['email'],
+            'phone_number': inquiry_data['phone_number'],
+            'message': inquiry_data['message'],
+            'property': property_details  # Pass property details if available
+        })
         from_email = settings.DEFAULT_FROM_EMAIL  # Use the default email from settings
         recipient_list = [email]
 
