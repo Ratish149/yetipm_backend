@@ -154,14 +154,8 @@ class InquiryListCreateView(generics.ListCreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # Debugging: Print the validated data
-        print("Validated data:", serializer.validated_data)
-
         # Save the Inquiry instance, which will include the property
         inquiry_instance = serializer.save()
-
-        # Debugging: Print the saved inquiry instance
-        print("Saved Inquiry instance:", inquiry_instance)
 
         # Send confirmation email
         inquiry_data = serializer.data
@@ -177,15 +171,21 @@ class InquiryListCreateView(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def send_confirmation_email(self, email, inquiry_data, property_details):
-        subject = "Inquiry Confirmation"
-        property=Project.objects.get(id=inquiry_data['property'])
+        subject = "Inquiry Confirmation"        
+        # Check if property_details is provided
+        if property_details:
+            property = Project.objects.get(id=property_details)
+            property_slug = property.slug
+        else:
+            property_slug = None  # Set to None if no property details are provided
+
         message = render_to_string('email/email_template.html', {
             'first_name': inquiry_data['first_name'],
             'last_name': inquiry_data['last_name'],
             'email': inquiry_data['email'],
             'phone_number': inquiry_data['phone_number'],
             'message': inquiry_data['message'],
-            'property': property  # Pass property details if available
+            'property': property_slug  # Pass property details or None
         })
         from_email = settings.DEFAULT_FROM_EMAIL  # Use the default email from settings
         recipient_list = [email]
