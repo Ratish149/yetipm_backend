@@ -178,6 +178,7 @@ class InquiryListCreateView(generics.ListCreateAPIView):
 
     def send_confirmation_email(self, email, inquiry_data, property_details):
         subject = "Inquiry Confirmation"
+        print(property_details)
         message = render_to_string('email/email_template.html', {
             'first_name': inquiry_data['first_name'],
             'last_name': inquiry_data['last_name'],

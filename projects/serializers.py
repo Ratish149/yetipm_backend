@@ -143,7 +143,7 @@ class ProjectAllSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
 class InquirySerializer(serializers.ModelSerializer):
-    property = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
+    property = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all(), allow_null=True, required=False)
     class Meta:
         model = Inquiry
         fields = ['id', 'inquiry_type', 'first_name', 'last_name', 'email', 'phone_number', 'message', 'submitted_at', 'property']
