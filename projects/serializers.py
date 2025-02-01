@@ -136,7 +136,7 @@ class ProjectAllSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'slug', 'project_address', 
             'price', 'area_square_footage', 'thumbnail_image', 
-            'bedrooms', 'bathrooms', 'city', 
+            'bedrooms', 'bathrooms', 'city','is_featured', 
             'created_at', 'updated_at'
         ]
 
