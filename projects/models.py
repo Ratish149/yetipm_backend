@@ -77,6 +77,7 @@ class Project(SlugMixin, models.Model):
     project_description = models.TextField(blank=True)
     area_square_footage = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     garage_spaces = models.IntegerField(blank=True, null=True)
+    thumbnail_image = models.FileField(null=True, blank=True)
     images = models.ManyToManyField(Image, blank=True)
     features = models.ManyToManyField(Features, blank=True)
     bedrooms = models.IntegerField()

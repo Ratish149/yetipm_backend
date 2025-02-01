@@ -130,13 +130,12 @@ class TestimonialSerializer(serializers.ModelSerializer):
 
 class ProjectAllSerializer(serializers.ModelSerializer):
     city = CitySerializer(read_only=True)
-    images = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Project
         fields = [
             'id', 'name', 'slug', 'project_address', 
-            'price', 'area_square_footage', 'images', 
+            'price', 'area_square_footage', 'thumbnail_image', 
             'bedrooms', 'bathrooms', 'city', 
             'created_at', 'updated_at'
         ]
