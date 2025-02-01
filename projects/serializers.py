@@ -130,18 +130,22 @@ class TestimonialSerializer(serializers.ModelSerializer):
 
 class ProjectAllSerializer(serializers.ModelSerializer):
     city = CitySerializer(read_only=True)
-    images = ImageSerializer(many=True, read_only=True)
-    features = FeaturesSerializer(many=True, read_only=True)
+    images = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Project
         fields = [
-            'id', 'name', 'slug', 'project_type', 'project_address', 
-            'price','area_square_footage', 'garage_spaces', 'images', 
-            'features', 'bedrooms', 'bathrooms', 'city', 
-            'availability', 'avialable_date', 'postal_code', 
+            'id', 'name', 'slug', 'project_address', 
+            'price', 'area_square_footage', 'images', 
+            'bedrooms', 'bathrooms', 'city', 
             'created_at', 'updated_at'
         ]
+
+    def get_images(self, obj):
+        """Return only the first image from the images related field."""
+        first_image = obj.images.first()
+        return ImageSerializer(first_image).data if first_image else None  # Serialize the first image
+
 class InquirySerializer(serializers.ModelSerializer):
     property = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all(), allow_null=True, required=False)
     class Meta:

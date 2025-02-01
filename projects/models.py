@@ -83,8 +83,10 @@ class Project(SlugMixin, models.Model):
     bathrooms = models.FloatField()
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     availability = models.BooleanField(default=True)
-    avialable_date = models.DateField(blank=True, null=True)
+    available_date = models.DateField(blank=True, null=True)
+
     postal_code = models.CharField(max_length=10, blank=True, null=True)
+    is_featured = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
