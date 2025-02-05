@@ -108,6 +108,8 @@ class Inquiry(models.Model):
     email = models.EmailField()
     phone_number = models.CharField(max_length=15)
     message = models.TextField()
+    lease_term = models.TextField(blank=True, null=True)
+    move_in_date = models.DateField(null=True, blank=True)
     submitted_at = models.DateTimeField(auto_now_add=True,)
 
     def __str__(self):

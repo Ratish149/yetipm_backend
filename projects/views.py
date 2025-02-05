@@ -162,22 +162,59 @@ class InquiryListCreateView(generics.ListCreateAPIView):
         
         # Determine the recipient email based on inquiry type
         recipient_email = inquiry_data.get('email')
-        
-        # Check if property details are available
+        inquiry_type = inquiry_data.get('inquiry_type')  # Get the inquiry type
         property_details = inquiry_data.get('property') if 'property' in inquiry_data else None
         
-        self.send_confirmation_email(recipient_email, inquiry_data, property_details)  # Pass property details if available
+        # Send emails based on inquiry type
+        if inquiry_type == 'Specific Property':
+            self.send_user_email(recipient_email, inquiry_data, property_details)  # Send user email
+        elif inquiry_type == 'General Inquiry':  # New condition for General Inquiry
+            self.send_general_inquiry_email(recipient_email, inquiry_data)  # Send general inquiry email
+        self.send_admin_email(inquiry_data, property_details)  # Always send admin email
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def send_confirmation_email(self, email, inquiry_data, property_details):
-        subject = "Inquiry Confirmation"        
-        # Check if property_details is provided
+    def send_user_email(self, email, inquiry_data, property_details):
+        # Get the property address from the property object
+        property_address = None
         if property_details:
             property = Project.objects.get(id=property_details)
             property_slug = property.slug
+            property_address = property.project_address  # Get the property address
+            property_price = property.price
+
         else:
-            property_slug = None  # Set to None if no property details are provided
+            property_slug = None
+        
+        subject = f"Availability Inquiry for {property_address}"
+
+        message = render_to_string('email/user_email_template.html', {
+            'first_name': inquiry_data['first_name'],
+            'last_name': inquiry_data['last_name'],
+            'email': inquiry_data['email'],
+            'phone_number': inquiry_data['phone_number'],
+            'message': inquiry_data['message'],
+            'lease_term': inquiry_data['lease_term'],  
+            'move_in_date': inquiry_data['move_in_date'],
+            'property_price': property_price, 
+            'property_address': property_address,
+            'property': property_slug
+        })
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [email]
+
+        send_mail(subject, message, from_email, recipient_list, html_message=message)
+
+    def send_admin_email(self, inquiry_data, property_details):
+        property_address = None
+        if property_details:
+            property = Project.objects.get(id=property_details)
+            property_slug = property.slug
+            property_address = property.project_address  
+            property_price = property.price
+            subject = f"New Inquiry Notification for {property_address}"  # Subject with property address
+        else:
+            subject = "New General Inquiry Notification"  # Subject without property address
 
         message = render_to_string('email/email_template.html', {
             'first_name': inquiry_data['first_name'],
@@ -185,12 +222,22 @@ class InquiryListCreateView(generics.ListCreateAPIView):
             'email': inquiry_data['email'],
             'phone_number': inquiry_data['phone_number'],
             'message': inquiry_data['message'],
-            'property': property_slug  # Pass property details or None
+            'property': property_details  # Pass property details if available
         })
-        from_email = settings.DEFAULT_FROM_EMAIL  # Use the default email from settings
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [settings.EMAIL_HOST_USER]  # Replace with the actual admin email
+
+        send_mail(subject, message, from_email, recipient_list, html_message=message)
+
+    def send_general_inquiry_email(self, email, inquiry_data):
+        subject = "General Inquiry Response"
+        message = render_to_string('email/general_inquiry_template.html', {
+            'first_name': inquiry_data['first_name'],
+            'last_name': inquiry_data['last_name'],
+        })
+        from_email = settings.DEFAULT_FROM_EMAIL
         recipient_list = [email]
 
-        # Send the email
         send_mail(subject, message, from_email, recipient_list, html_message=message)
 
 class InquiryDetailView(generics.RetrieveUpdateDestroyAPIView):

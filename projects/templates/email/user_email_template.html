@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Inquiry Notification</title>
+    <title>Availability Inquiry Response</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -40,43 +40,32 @@
             font-size: 12px;
             color: #6c757d;
         }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 20px 0;
-            background-color: #00796b;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 4px;
-            border: none;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        .button:hover {
-            background-color: #005f56;
-            transform: scale(1.02);
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <img src="https://yetipm.baliyoventures.com/media/YetiPM.jpg" alt="Yeti Property Management Logo">
-            <h1>New Inquiry Received</h1>
+            <h1>Availability Inquiry Response</h1>
         </div>
         <div class="content">
-            <p>Dear Admin,</p>
-            <p>You have received a new inquiry. Here are the details:</p>
-            <p><strong>First Name:</strong> {{first_name}}</p>
-            <p><strong>Last Name:</strong> {{last_name}}</p>
-            <p><strong>Email:</strong> {{email}}</p>
-            <p><strong>Phone Number:</strong> {{phone_number}}</p>
-            <p><strong>Message:</strong> {{message}}</p>
-
-            {% if property %}
-                <a href="https://yetipm-frontend-xi.vercel.app/rentals/{{ property }}" class="button">View Property Details</a>
-            {% endif %}
-
+            <p>Dear {{ first_name }} {{ last_name }},</p>
+            <p>Thank you for your interest in our rental property at {{ property_address }}. We appreciate your inquiry and would love to assist you in finding your perfect home.</p>
+            <p>Currently, this property is available, and here are the key details:</p>
+            <ul>
+                <li><strong>Monthly Rent:</strong> {{ property_price }}</li>
+                <li><strong>Lease Term:</strong> {{ lease_term }}</li>
+                <li><strong>Move-in Date:</strong> {{ move_in_date }}</li>
+                <li><strong>Additional Features:</strong> [Any special amenities or policies]</li>
+            </ul>
+            <p>If you'd like to schedule a tour or have any further questions, please feel free to reach out to me directly. I'd be happy to guide you through the application process and provide any additional information you may need.</p>
+            <p>Looking forward to assisting you!</p>
+            <p>Best regards,<br>
+            Shraddha Shrestha<br>
+            Sales & Marketing Head<br>
+            Yeti Property Management<br>
+            469-345-6419<br>
+            <a href="mailto:info@yetipm.com">info@yetipm.com</a></p>
         </div>
         <div class="footer">
             <p>Thank you,</p>
