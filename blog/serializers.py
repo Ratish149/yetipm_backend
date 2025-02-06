@@ -62,6 +62,7 @@ class PostSerializer(serializers.ModelSerializer):
 class PostSmallSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
+        field='__all__'
         depth = 1
         ordering = ['-created_at']
 
