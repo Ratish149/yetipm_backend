@@ -41,21 +41,23 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    blog_content = serializers.SerializerMethodField()
+    category=serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+    author=serializers.PrimaryKeyRelatedField(queryset=Author.objects.all())
+    tags=serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
     class Meta:
         model = Post
         fields = '__all__'
         depth = 2
         ordering = ['-created_at']
     
-    def get_blog_content(self, obj):
-        html_string = obj.blog_content
-        soup = BeautifulSoup(html_string, 'html.parser')
-        toc_div = soup.find('div', class_='mce-toc')
-        if toc_div is not None:
-            toc_div.extract()
-        updated_html_string = str(soup)
-        return mark_safe(updated_html_string)
+    # def get_blog_content(self, obj):
+    #     html_string = obj.blog_content
+    #     soup = BeautifulSoup(html_string, 'html.parser')
+    #     toc_div = soup.find('div', class_='mce-toc')
+    #     if toc_div is not None:
+    #         toc_div.extract()
+    #     updated_html_string = str(soup)
+    #     return mark_safe(updated_html_string)
 
 class PostSmallSerializer(serializers.ModelSerializer):
     class Meta:

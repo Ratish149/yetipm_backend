@@ -1,9 +1,19 @@
 from django.urls import path
-from .views import post_list,post_single,post_list_slug,recent_posts
+from .views import (
+    PostListCreateView, PostDetailView, PostListSlugView, RecentPostsView,
+    AuthorListCreateView, AuthorDetailView, CategoryListCreateView, CategoryDetailView,
+    TagListCreateView, TagDetailView
+)
 
 urlpatterns = [
-    path('blogs/', post_list, name='post_list'),
-    path('latest-blogs/', recent_posts, name='recent_posts'),
-    path('blogs-slug/', post_list_slug, name='post_list_slug'),
-    path('blogs-single/<str:slug>/', post_single, name='post_single'),
+    path('blogs/', PostListCreateView.as_view(), name='post_list'),
+    path('latest-blogs/', RecentPostsView.as_view(), name='recent_posts'),
+    path('blogs-slug/', PostListSlugView.as_view(), name='post_list_slug'),
+    path('blogs-single/<str:slug>/', PostDetailView.as_view(), name='post_single'),
+    path('authors/', AuthorListCreateView.as_view(), name='author-list-create'),
+    path('authors/<int:id>/', AuthorDetailView.as_view(), name='author-detail'),
+    path('categories/', CategoryListCreateView.as_view(), name='category-list-create'),
+    path('categories/<int:id>/', CategoryDetailView.as_view(), name='category-detail'),
+    path('tags/', TagListCreateView.as_view(), name='tag-list-create'),
+    path('tags/<int:id>/', TagDetailView.as_view(), name='tag-detail'),
 ]

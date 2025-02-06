@@ -1,66 +1,93 @@
-from django.shortcuts import render
-from rest_framework import status
-from rest_framework.decorators import api_view
+from django.shortcuts import get_object_or_404
+from rest_framework import status, generics
 from rest_framework.response import Response
-from .models import Post,Tag,Category
-from .serializers import PostSerializer,PostSmallSerializer,TagSerializer,CategorySerializer,TagSmallSerializer,CategorySmallSerializer,PostSlugSerializer
+from rest_framework.views import APIView
+from .models import Post, Tag, Category, Author
+from .serializers import (
+    PostSerializer, PostSmallSerializer, TagSerializer, CategorySerializer,
+    TagSmallSerializer, CategorySmallSerializer, PostSlugSerializer, AuthorSerializer
+)
 from bs4 import BeautifulSoup
 
+class PostListCreateView(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return PostSmallSerializer
+        return PostSerializer
 
-@api_view(['GET'])
-def post_list(request):
-    if request.method == 'GET':
-        posts = Post.objects.all()
-        tags = Tag.objects.all()
-        categories = Category.objects.all()
-        serializer = PostSmallSerializer(posts, many=True)
-        tag_serializer = TagSerializer(tags, many=True)
-        categories_serializer = CategorySerializer(categories, many=True)
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        posts_serializer = self.get_serializer(queryset, many=True)
+        tags_serializer = TagSerializer(Tag.objects.all(), many=True)
+        categories_serializer = CategorySerializer(Category.objects.all(), many=True)
+        
         return Response({
-            "posts":serializer.data,
-            "tags":tag_serializer.data,
-            "categories":categories_serializer.data,
+            "posts": posts_serializer.data,
+            "tags": tags_serializer.data,
+            "categories": categories_serializer.data,
         })
 
-@api_view(['GET'])
-def post_list_slug(request):
-    if request.method == 'GET':
-        posts = Post.objects.all()
-        serializer = PostSlugSerializer(posts, many=True)
-        return Response(serializer.data)
+class PostListSlugView(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSlugSerializer
 
-@api_view(['GET'])
-def post_single(request, slug):
-    if request.method == 'GET':
-        posts = Post.objects.get(slug=slug)
-        html_string = posts.blog_content
+class PostDetailView(generics.RetrieveUpdateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSmallSerializer
+    lookup_field = 'slug'
+
+    def retrieve(self, request, *args, **kwargs):
+        post = self.get_object()
+        html_string = post.blog_content
         soup = BeautifulSoup(html_string, 'html.parser')
         toc_div = soup.find('div', class_='mce-toc')
         if toc_div is not None:
             toc_div.extract()
         updated_html_string = str(toc_div)
-        serializer = PostSerializer(posts)
-
-        # New code to get similar listings
-        similar_posts = Post.objects.filter(
-            tags__in=posts.tags.all()
-        ).exclude(slug=slug).distinct()[:5]
+        
+        similar_posts = Post.objects.filter(tags__in=post.tags.all()).exclude(slug=post.slug).distinct()[:5]
         similar_serializer = PostSmallSerializer(similar_posts, many=True)
-
+        
         return Response({
-            "data": serializer.data,
+            "data": self.get_serializer(post).data,
             "toc": updated_html_string,
-            "similar_listings": similar_serializer.data,  # Include similar listings
-        })
-    
-@api_view(['GET'])
-def recent_posts(request):
-    if request.method == 'GET':
-        # Order by created_at in descending order to get the latest posts
-        posts = Post.objects.order_by('-created_at')[:5]
-        posts_serializer = PostSerializer(posts, many=True)
-        return Response({
-          "recent_posts": posts_serializer.data,
+            "similar_listings": similar_serializer.data,
         })
 
+class RecentPostsView(generics.ListAPIView):
+    queryset = Post.objects.order_by('-created_at')[:5]
+    serializer_class = PostSerializer
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({"recent_posts": serializer.data})
+
+class AuthorListCreateView(generics.ListCreateAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+class AuthorDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+    lookup_field = 'id'
+
+class CategoryListCreateView(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    lookup_field = 'id'
+
+class TagListCreateView(generics.ListCreateAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+class TagDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    lookup_field = 'id'
