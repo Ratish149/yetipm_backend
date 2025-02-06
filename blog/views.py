@@ -81,7 +81,7 @@ class CategoryListCreateView(generics.ListCreateAPIView):
 class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    lookup_field = 'id'
+    lookup_field = 'category_name'
 
 class TagListCreateView(generics.ListCreateAPIView):
     queryset = Tag.objects.all()

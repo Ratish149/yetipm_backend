@@ -52,7 +52,7 @@ class Post(SlugMixin,models.Model):
     slug = models.SlugField(max_length=300, unique=True,null=True,blank=True)
     title = models.CharField(max_length=500)
     blog_duration_to_read = models.CharField(max_length=100,blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     thumbnail_image = models.FileField(null=True, blank=True)
     thumbnail_image_alt_description = models.CharField(max_length=300,null=True,blank=True)
     blog_content = tinymce_models.HTMLField(blank=True)
