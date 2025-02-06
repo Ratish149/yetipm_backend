@@ -33,7 +33,7 @@ class Author(models.Model):
         return self.name
 
 class Category(models.Model):
-    category_name = models.CharField(max_length=200, primary_key=True)
+    category_name = models.CharField(max_length=200,unique=True)
     category_image = models.FileField(blank=True,null=True)
 
     def __str__(self):
