@@ -82,7 +82,7 @@ class ProjectFilter(django_filters.FilterSet):
         fields = ['min_price', 'max_price', 'beds', 'baths', 'property_type', 'city', 'min_area_square_footage', 'max_area_square_footage', 'features']
 
 class ProjectListView(generics.ListCreateAPIView):
-    queryset = Project.objects.all().order_by('-created_at')
+    queryset = Project.objects.filter(availability=True).order_by('-created_at')
     serializer_class = ProjectAllSerializer
 
     def get_serializer_class(self):
@@ -97,17 +97,6 @@ class ProjectListView(generics.ListCreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
     pagination_class = CustomPagination
     
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        
-        # Handle availability filter separately
-        availability = self.request.query_params.get('availability')
-        if availability is not None:
-            # Convert string to boolean
-            is_available = availability.lower() in ['true', '1', 'yes']
-            queryset = queryset.filter(availability=is_available)
-        
-        return queryset
     
     def create(self, request, *args, **kwargs):
         try:
