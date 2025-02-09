@@ -71,7 +71,7 @@ class ProjectFilter(django_filters.FilterSet):
     max_price = django_filters.NumberFilter(field_name="price", lookup_expr='lte')
     beds = django_filters.NumberFilter(field_name="bedrooms", lookup_expr='gte')
     baths = django_filters.NumberFilter(field_name="bathrooms", lookup_expr='gte')
-    property_type = django_filters.CharFilter(field_name="property_type", lookup_expr='iexact')
+    property_type = django_filters.CharFilter(field_name="project_type", lookup_expr='iexact')
     city = django_filters.CharFilter(field_name="city__name", lookup_expr='icontains')
     min_area_square_footage = django_filters.NumberFilter(field_name="area_square_footage", lookup_expr='gte')
     max_area_square_footage = django_filters.NumberFilter(field_name="area_square_footage", lookup_expr='lte')
