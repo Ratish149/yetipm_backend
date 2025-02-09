@@ -86,7 +86,7 @@ class Project(SlugMixin, models.Model):
     availability = models.BooleanField(default=True)
     available_date = models.DateField(blank=True, null=True)
 
-    postal_code = models.CharField(max_length=10, blank=True, null=True)
+    zip_code = models.CharField(max_length=10, blank=True, null=True)
     is_featured = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
