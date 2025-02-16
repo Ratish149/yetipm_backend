@@ -220,3 +220,7 @@ EMAIL_HOST_USER = 'bdevil149@gmail.com'
 EMAIL_HOST_PASSWORD = 'dpoq wpsi tfwl thgs'
 
 DEFAULT_FROM_EMAIL = 'YetiPm <YetiPM@gmail.com>'
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000','investly.baliyoventures.com','www.investly.baliyoventures.com'
+]
