@@ -222,6 +222,3 @@ EMAIL_HOST_PASSWORD = 'dpoq wpsi tfwl thgs'
 
 DEFAULT_FROM_EMAIL = 'YetiPm <YetiPM@gmail.com>'
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000','https://investly.baliyoventures.com','https://www.investly.baliyoventures.com'
-]
