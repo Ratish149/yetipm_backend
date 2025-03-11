@@ -269,8 +269,9 @@ class FAQListCreateView(generics.ListCreateAPIView):
     serializer_class = FAQSerializer
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = [rest_filters.SearchFilter, DjangoFilterBackend]
-    search_fields = ['question']  # Assuming you want to search by the question field
+    search_fields = ['question']
     filterset_fields = ['category']
+    pagination_class = None  # This will remove pagination for this view
 
 class FAQDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FAQ.objects.all()
