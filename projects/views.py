@@ -268,7 +268,6 @@ class FAQListCreateView(generics.ListCreateAPIView):
     queryset = FAQ.objects.all()
     serializer_class = FAQSerializer
     parser_classes = (MultiPartParser, FormParser)
-    pagination_class = CustomPagination
     filter_backends = [rest_filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['question']  # Assuming you want to search by the question field
     filterset_fields = ['category']
