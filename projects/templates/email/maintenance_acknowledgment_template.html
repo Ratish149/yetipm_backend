@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Request Acknowledgment</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #004d40 0%, #00695c 100%);
+            color: #ffffff;
+            padding: 35px 20px;
+            text-align: center;
+            border-bottom: 5px solid #003d33;
+        }
+
+        .header img {
+            max-width: 100px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            padding: 30px 25px;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+
+        .signature {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 2px solid #eaeaea;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .contact-info a {
+            color: #004d40;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            color: #00695c;
+            text-decoration: underline;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 14px;
+            color: #6c757d;
+            border-top: 2px solid #eaeaea;
+        }
+
+        .footer a {
+            color: #004d40;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .container {
+                margin: 15px auto;
+                border-radius: 8px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://yetipm.baliyoventures.com/media/YetiPM.jpg" alt="Yeti Property Management Logo">
+            <h1>Maintenance Request Acknowledgment</h1>
+        </div>
+        <div class="content">
+            <p>Dear {{ tenant_name }},</p>
+
+            <p>Thank you for reaching out to us. We have received your maintenance request and appreciate you bringing
+                this to our attention.</p>
+
+            <p>Our team is currently reviewing the details, and we will schedule the necessary repairs as soon as
+                possible. You will receive an update once the work is scheduled, and our maintenance staff will contact
+                you if they need further information or to arrange access.</p>
+
+            <p>If you have any urgent concerns or additional details to share, please don't hesitate to contact us
+                directly at 469-345-6419 or via email at info@yetipm.com.</p>
+
+            <p>We appreciate your patience as we work to resolve this matter.</p>
+
+            <div class="signature">
+                <p>Best regards,<br>
+                    <strong>Shraddha Shrestha</strong><br>
+                    <span style="color: #004d40;">Sales Director</span><br>
+                    <strong>Yeti Property Management</strong>
+                </p>
+
+                <div class="contact-info">
+                    <p>📞 <strong>Phone:</strong> <a href="tel:469-345-6419">469-345-6419</a><br>
+                        ✉️ <strong>Email:</strong> <a href="mailto:info@yetipm.com">info@yetipm.com</a><br>
+                        🌐 <strong>Website:</strong> <a href="https://www.yetipm.com">www.yetipm.com</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <p>© 2024 Yeti Property Management. All rights reserved.</p>
+            <p>469-345-6419 | <a href="mailto:info@yetipm.com">info@yetipm.com</a></p>
+        </div>
+    </div>
+</body>
+
+</html>

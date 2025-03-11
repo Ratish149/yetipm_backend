@@ -158,3 +158,56 @@ class InquiryALLSerializer(serializers.ModelSerializer):
         model = Inquiry
         fields = ['id', 'inquiry_type', 'first_name', 'last_name', 'email', 'phone_number', 'message', 'lease_term', 'move_in_date','submitted_at','property']
         read_only_fields = ['submitted_at']
+
+class WelcomeEmailSerializer(serializers.Serializer):
+    property_id = serializers.PrimaryKeyRelatedField(
+        queryset=Project.objects.all(),
+        required=True,
+    )
+    tenant_name = serializers.CharField(
+        required=True,
+    )
+    email = serializers.EmailField(
+        required=True,
+    )
+    rent_due_date = serializers.CharField(
+        required=False,
+
+    )
+    late_fee_days = serializers.CharField(
+        required=False,
+
+    )
+    late_fee_amount = serializers.CharField(
+        required=False,
+
+    )
+    trash_day = serializers.CharField(
+        required=False,
+
+    )
+    trash_time = serializers.CharField(
+        required=False,
+
+    )
+
+    def to_representation(self, instance):
+        # This will show all properties in the GET response
+        representation = super().to_representation(instance)
+        representation['available_properties'] = [
+            {
+                'id': project.id,
+                'name': project.name,
+                'address': project.project_address,
+                'type': project.project_type,
+                'bedrooms': project.bedrooms,
+                'bathrooms': project.bathrooms
+            }
+            for project in Project.objects.all().order_by('name')
+        ]
+        return representation
+
+class MaintenanceAcknowledgmentSerializer(serializers.Serializer):
+    tenant_name = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+

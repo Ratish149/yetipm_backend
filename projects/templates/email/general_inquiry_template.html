@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,62 +10,130 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f8f9fa;
+            line-height: 1.6;
         }
+
         .container {
             width: 100%;
             max-width: 600px;
             margin: 40px auto;
             background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
         }
+
         .header {
-            background-color: #004d40;
+            background: linear-gradient(135deg, #004d40 0%, #00695c 100%);
             color: #ffffff;
-            padding: 20px;
+            padding: 30px 20px;
             text-align: center;
         }
+
         .header img {
-            max-width: 100px;
-            margin-bottom: 10px;
+            max-width: 80px;
+            margin-bottom: 15px;
+            border-radius: 8px;
         }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
         .content {
-            padding: 20px;
+            padding: 35px 30px;
+            color: #2c3e50;
         }
+
+        .signature {
+            margin-top: 25px;
+            padding-top: 10px;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .contact-info {
+            margin-top: 15px;
+        }
+
+        .contact-info a {
+            color: #004d40;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
         .footer {
-            background-color: #e9ecef;
+            background-color: #f8f9fa;
             text-align: center;
-            padding: 15px;
-            font-size: 12px;
+            padding: 20px;
+            font-size: 13px;
             color: #6c757d;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #004d40;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #00695c;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <img src="https://yetipm.baliyoventures.com/media/YetiPM.jpg" alt="Yeti Property Management Logo">
-            <h1>General Inquiry Response</h1>
+            <h1>Thank You for Your Interest</h1>
         </div>
         <div class="content">
             <p>Dear {{ first_name }} {{ last_name }},</p>
-            <p>Thank you for reaching out to us with your inquiry. We appreciate your interest and are here to assist you.</p>
-            <p>Our team will review your message and get back to you as soon as possible. If you have any urgent questions, please feel free to contact us directly.</p>
-            <p>Looking forward to assisting you!</p>
-            <p>Best regards,<br>
-            Shraddha Shrestha<br>
-            Sales & Marketing Head<br>
-            Yeti Property Management<br>
-            469-345-6419<br>
-            <a href="mailto:info@yetipm.com">info@yetipm.com</a></p>
+
+            <p>Thank you for your inquiry and for considering Yeti Property Management. We value the opportunity to
+                assist you and ensure your experience with us is seamless and satisfactory.</p>
+
+            <p>At Yeti Property Management, we are committed to delivering exceptional service and maintaining strong
+                relationships with both tenants and property owners. I would be happy to provide you with more detailed
+                information and address any questions or concerns you may have.</p>
+
+            <p>Please feel free to contact me directly or explore our website for more information about our services
+                and available properties:</p>
+
+            <div class="contact-info">
+                <p>📞 <strong>Phone:</strong> <a href="tel:469-345-6419">469-345-6419</a><br>
+                    ✉️ <strong>Email:</strong> <a href="mailto:info@yetipm.com">info@yetipm.com</a><br>
+                    🌐 <strong>Website:</strong> <a href="https://www.yetipm.com">www.yetipm.com</a></p>
+            </div>
+
+            <div class="signature">
+                <p>We look forward to the possibility of working with you and meeting your property management needs.
+                </p>
+
+                <p>Kind regards,<br>
+                    <strong>Shraddha Shrestha</strong><br>
+                    Sales Director<br>
+                    Yeti Property Management
+                </p>
+            </div>
         </div>
         <div class="footer">
-            <p>Thank you,</p>
-            <p>The YetiPM Team</p>
-            <p>© 2025 Texas Rentals. All rights reserved.</p>
+            <p>© 2024 Yeti Property Management. All rights reserved.</p>
+            <p>469-345-6419 | <a href="mailto:info@yetipm.com" style="color: #004d40;">info@yetipm.com</a></p>
         </div>
     </div>
 </body>
+
 </html>

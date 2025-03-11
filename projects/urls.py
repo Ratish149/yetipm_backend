@@ -35,4 +35,8 @@ urlpatterns = [
 
     path('faqs/', views.FAQListCreateView.as_view(), name='faq-list-create'),
     path('faqs/<int:id>/', views.FAQDetailView.as_view(), name='faq-detail'),
+
+    # Welcome Email URL
+    path('send-welcome-email/', views.SendWelcomeEmailView.as_view(), name='send-welcome-email'),
+    path('send-maintenance-acknowledgment/', views.SendMaintenanceAcknowledgmentView.as_view(), name='send-maintenance-acknowledgment'),
 ]

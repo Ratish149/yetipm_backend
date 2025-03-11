@@ -9,6 +9,7 @@ from rest_framework import status
 from django.conf import settings  # Import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from rest_framework import serializers
 
 
 from .models import (
@@ -19,7 +20,7 @@ from rest_framework.pagination import PageNumberPagination
 from .serializers import (
     StateSerializer, CitySerializer, ImageSerializer,
     FeaturesSerializer, FAQSerializer, ProjectSerializer,
-    TestimonialSerializer, InquirySerializer, ProjectAllSerializer,ProjectListDetailSerializer, InquiryALLSerializer
+    TestimonialSerializer, InquirySerializer, ProjectAllSerializer,ProjectListDetailSerializer, InquiryALLSerializer, WelcomeEmailSerializer, MaintenanceAcknowledgmentSerializer
 )
 
 # Create your views here.
@@ -276,4 +277,136 @@ class FAQListCreateView(generics.ListCreateAPIView):
 class FAQDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FAQ.objects.all()
     serializer_class = FAQSerializer
-    lookup_field = 'id'  # Assuming you want to look up by a slug field
+    lookup_field = 'id'
+
+class SendWelcomeEmailView(generics.CreateAPIView):
+    serializer_class = WelcomeEmailSerializer
+    def post(self, request, *args, **kwargs):
+        try:
+            # Get property data
+            property_id = request.data.get('property_id')
+            if not property_id:
+                return Response(
+                    {"error": "property_id is required"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            try:
+                property = Project.objects.get(id=property_id)
+            except Project.DoesNotExist:
+                return Response(
+                    {"error": "Property not found"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            # Get tenant data from request
+            tenant_data = {
+                'tenant_name': request.data.get('tenant_name'),
+                'email': request.data.get('email'),
+                'rent_due_date': request.data.get('rent_due_date', '1st of each month'),
+                'late_fee_days': request.data.get('late_fee_days', '3'),
+                'late_fee_amount': request.data.get('late_fee_amount', '$50'),
+                'trash_day': request.data.get('trash_day', 'Wednesday'),
+                'trash_time': request.data.get('trash_time', '7:00 AM'),
+            }
+
+            # Validate required fields
+            if not tenant_data['tenant_name'] or not tenant_data['email']:
+                return Response(
+                    {"error": "tenant_name and email are required"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Get property features/amenities
+            amenities = []
+            if property.features.exists():
+                amenities = [feature.name for feature in property.features.all()]
+            
+            # Add property details to tenant data
+            tenant_data.update({
+                'property_name': property.name,
+                'property_address': property.project_address,
+                'property_type': property.project_type,
+                'bedrooms': property.bedrooms,
+                'bathrooms': property.bathrooms,
+                'garage_spaces': property.garage_spaces if property.garage_spaces else 'Not available',
+                'area_square_footage': f"{property.area_square_footage:,} sq ft" if property.area_square_footage else 'Not specified',
+            })
+
+            # Format amenities as HTML list
+            amenities_html = ''.join([f'{amenity},' for amenity in amenities])
+            tenant_data['amenities_list'] = amenities_html if amenities else '<li>No specific amenities listed</li>'
+
+            # Render email template
+            message = render_to_string('email/welcome_email_template.html', tenant_data)
+            
+            # Send email
+            subject = f"Welcome to Your New Home at {property.name} – Yeti Property Management"
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [tenant_data['email']]
+
+            send_mail(
+                subject,
+                message,
+                from_email,
+                recipient_list,
+                html_message=message
+            )
+
+            return Response(
+                {
+                    "message": "Welcome email sent successfully",
+                    "property": property.name,
+                    "sent_to": tenant_data['email']
+                },
+                status=status.HTTP_200_OK
+            )
+
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class SendMaintenanceAcknowledgmentView(generics.CreateAPIView):
+    serializer_class = MaintenanceAcknowledgmentSerializer
+
+    def post(self, request, *args, **kwargs):
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            
+            # Get validated data
+            data = serializer.validated_data
+            
+            # Render email template
+            message = render_to_string('email/maintenance_acknowledgment_template.html', {
+                'tenant_name': data['tenant_name']
+            })
+            
+            # Send email
+            subject = f"Acknowledgment of Maintenance Request – Yeti Property Management"
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [data['email']]
+
+            send_mail(
+                subject,
+                message,
+                from_email,
+                recipient_list,
+                html_message=message
+            )
+
+            return Response(
+                {
+                    "message": "Maintenance acknowledgment email sent successfully",
+                    "sent_to": data['email']
+                },
+                status=status.HTTP_200_OK
+            )
+
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

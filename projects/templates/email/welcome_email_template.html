@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Yeti Property Management</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #004d40 0%, #00695c 100%);
+            color: #ffffff;
+            padding: 35px 20px;
+            text-align: center;
+            border-bottom: 5px solid #003d33;
+        }
+
+        .header img {
+            max-width: 100px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            padding: 30px 25px;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #004d40;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .section h2 {
+            color: #004d40;
+            margin: 0 0 12px 0;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .section p {
+            margin: 0 0 12px 0;
+            line-height: 1.6;
+        }
+
+        ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .signature {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 2px solid #eaeaea;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .contact-info a {
+            color: #004d40;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            color: #00695c;
+            text-decoration: underline;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 14px;
+            color: #6c757d;
+            border-top: 2px solid #eaeaea;
+        }
+
+        .footer a {
+            color: #004d40;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .important-note {
+            font-weight: 500;
+            color: #004d40;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .container {
+                margin: 15px auto;
+                border-radius: 8px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .section {
+                padding: 12px;
+                margin: 15px 0;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://yetipm.baliyoventures.com/media/YetiPM.jpg" alt="Yeti Property Management Logo">
+            <h1>Welcome to Your New Home!</h1>
+        </div>
+        <div class="content">
+            <p>Dear {{ tenant_name }},</p>
+
+            <p>Welcome to your new home! On behalf of the entire team at Yeti Property Management, we are delighted to
+                have you as a resident. We are committed to ensuring your experience with us is positive, and we are
+                here to assist you with anything you may need.</p>
+
+            <div class="section">
+                <h2>📋 Basic Guidelines</h2>
+                <p>We ask that all tenants adhere to the community rules and regulations to maintain a safe and
+                    comfortable living environment for everyone. Please take a moment to review the lease agreement,
+                    which outlines the full set of guidelines. Should you have any questions, feel free to reach out to
+                    us.</p>
+            </div>
+
+            <div class="section">
+                <h2>🏠 Amenities</h2>
+                <p>Your property includes the following amenities:</p>
+                <ul>
+                    {{ amenities_list }}
+                </ul>
+                <p>We encourage you to take full advantage of these features. Please reach out if you need any
+                    additional information or assistance with access.</p>
+            </div>
+
+            <div class="section">
+                <h2>💰 Late Fee Policy</h2>
+                <p><span class="important-note">Important:</span> Please be mindful of the rent payment due date. Rent
+                    is due on the <strong>{{ rent_due_date }}</strong>, and a late
+                    fee will be applied if payment is not received by {{ late_fee_days }} days after the due date. The
+                    late fee is <strong>{{ late_fee_amount }}</strong>, and we kindly ask that you make payments
+                    promptly to avoid any
+                    penalties.</p>
+            </div>
+
+            <div class="section">
+                <h2>🗑️ Trash Day</h2>
+                <p>Trash collection is scheduled for <strong>{{ trash_day }}</strong>. Please ensure that your bins are
+                    placed curbside
+                    by <strong>{{ trash_time }}</strong> to ensure timely pickup. Kindly keep the area around your bins
+                    clean and free
+                    from any debris.</p>
+            </div>
+
+            <div class="section">
+                <h2>📜 HOA Rules</h2>
+                <p>As part of the community, you are subject to the rules and guidelines set by the Homeowners
+                    Association (HOA). We kindly ask that you review these rules to ensure compliance and help maintain
+                    a harmonious living environment. If you have any questions about HOA rules or need further
+                    clarification, please feel free to reach out to us.</p>
+            </div>
+
+            <p>We are excited to have you with us and are here to help with any needs you may have. If you need anything
+                or have questions, please don't hesitate to contact us.</p>
+
+            <div class="signature">
+                <p>Warm regards,<br>
+                    <strong>Shraddha Shrestha</strong><br>
+                    <span style="color: #004d40;">Sales Director</span><br>
+                    <strong>Yeti Property Management</strong>
+                </p>
+
+                <div class="contact-info">
+                    <p>📞 <strong>Phone:</strong> <a href="tel:469-345-6419">469-345-6419</a><br>
+                        ✉️ <strong>Email:</strong> <a href="mailto:info@yetipm.com">info@yetipm.com</a><br>
+                        🌐 <strong>Website:</strong> <a href="https://www.yetipm.com">www.yetipm.com</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <p>© 2024 Yeti Property Management. All rights reserved.</p>
+            <p>469-345-6419 | <a href="mailto:info@yetipm.com">info@yetipm.com</a></p>
+        </div>
+    </div>
+</body>
+
+</html>
