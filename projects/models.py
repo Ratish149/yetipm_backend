@@ -45,8 +45,15 @@ class Image(models.Model):
         return str(self.image)
 
 class FAQ(models.Model):
+    CATEGORY_CHOICES = [
+        ('General Questions', 'General Questions'),
+        ('Property Owners/Landlords', 'Property Owners/Landlords'),
+        ('Tenants', 'Tenants'),
+    ]
+
     question = models.CharField(max_length=200)
     answer = models.TextField()
+    category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, default='General Questions')
 
     def __str__(self):
         return self.question

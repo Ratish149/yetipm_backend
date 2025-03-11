@@ -271,6 +271,7 @@ class FAQListCreateView(generics.ListCreateAPIView):
     pagination_class = CustomPagination
     filter_backends = [rest_filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['question']  # Assuming you want to search by the question field
+    filterset_fields = ['category']
 
 class FAQDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FAQ.objects.all()
