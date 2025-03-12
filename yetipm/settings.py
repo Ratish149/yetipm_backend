@@ -89,15 +89,15 @@ WSGI_APPLICATION = 'yetipm.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-} """
+}
 
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'yeti_pm',
@@ -106,7 +106,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '',
     } 
-}
+} """
  
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
@@ -214,11 +214,12 @@ TINYMCE_DEFAULT_CONFIG = {
 SUMMERNOTE_THEME = 'bs4'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'bdevil149@gmail.com'
-EMAIL_HOST_PASSWORD = 'dpoq wpsi tfwl thgs'
+EMAIL_HOST = 'mail.yetipm.com'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'info@yetipm.com'
+EMAIL_HOST_PASSWORD = '%3P4uy5#BUN+'
 
-DEFAULT_FROM_EMAIL = 'YetiPm <YetiPM@gmail.com>'
+DEFAULT_FROM_EMAIL = 'YetiPM <info@yetipm.com>'
 
