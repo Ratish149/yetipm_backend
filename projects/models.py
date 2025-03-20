@@ -132,7 +132,7 @@ class Testimonial(models.Model):
     ]
     name = models.CharField(max_length=100)
     testimonial = models.TextField()
-    image = models.FileField()
+    image = models.FileField(null=True, blank=True)
     source = models.CharField(max_length=100, choices=SOURCE_CHOICES,default='Other')
 
     def __str__(self):
