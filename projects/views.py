@@ -9,8 +9,6 @@ from rest_framework import status
 from django.conf import settings  # Import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from rest_framework import serializers
-
 
 from .models import (
     State, City, Image, Features,
